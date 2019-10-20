@@ -1,3 +1,4 @@
 # Spring-Cloud-Starter
 
-[Zielbild] (zielbild.md)
+## [Zielbild](zielbild.md)
+## [Architektur](architektur.md)
