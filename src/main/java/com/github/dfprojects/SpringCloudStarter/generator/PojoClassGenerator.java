@@ -13,105 +13,106 @@ import com.google.googlejavaformat.java.FormatterException;
 
 /**
  * Generator for Java POJO Classes
- * 
+ *
  * @author Florian Widder
  *
  */
 @Service
 public class PojoClassGenerator {
 
-	private static final Logger logger = LoggerFactory.getLogger(PojoClassGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(PojoClassGenerator.class);
 
-	/**
-	 * Template for Class File
-	 */
-	private static final String CLASS_TEMPLATE = """
-												   package $PACKAGENAME$;
-												   
-												   public class $CLASSNAME${
-												   
-												   $ATTRIBUTS$
-												   $GETTER$
-												   $SETTER$}
-												   """;
+    /**
+     * Template for Class File
+     */
+    private static final String CLASS_TEMPLATE = """
+			package $PACKAGENAME$;
 
-	/**
-	 * Template for an Atttribut
-	 */
-	private static final String ATTRIBUTS_TEMPLATE = """
-											                private $TYPE$ $NAME$;
-				                                        """;
+			public class $CLASSNAME$ {
 
-	/**
-	 * Template for a getter Method
-	 */
-	private static final String GETTER_TEMPLATE = """
-	                                                    public $TYPE$ get$NAME$(){
-	                                                        return $NAME$;
-	                                                    }
-	                                                """;
+			    $ATTRIBUTS$
+				$GETTER$
+				$SETTER$
+		    }
+			""";
 
-	/**
-	 * Template for a setter Method
-	 */
-	private static final String SETTER_TEMPLATE = """
-	                                                    public void get$NAME$($TYPE$ $NAME$){
-	                                                        this.$NAME$ = $NAME$;
-	                                                    }
-                                                    """;
+    /**
+     * Template for an Atttribut
+     */
+    private static final String ATTRIBUTS_TEMPLATE = """
+			private $TYPE$ $NAME$;
+			""";
 
-	private final Formatter formatter = new Formatter();
+    /**
+     * Template for a getter Method
+     */
+    private static final String GETTER_TEMPLATE = """
+	        public $TYPE$ get$NAME$(){
+	            return $NAME$;
+	        }
+	        """;
 
-	/**
-	 * Creates a POJO Class File
-	 * 
-	 * @param packageName package of the Class
-	 * @param className   name of the Class
-	 * @param attributs   attributes of the Class (name, type)
-	 * @return the generated Class File
-	 */
-	public String generate(@NonNull final String packageName, @NonNull final String className,
-			@NonNull final Map<String, String> attributs) {
-		StringTemplate classTemplate = new StringTemplate(CLASS_TEMPLATE);
-		StringTemplate attributsTemplate = new StringTemplate(ATTRIBUTS_TEMPLATE);
-		StringTemplate getterTemplate = new StringTemplate(GETTER_TEMPLATE);
-		StringTemplate setterTemplate = new StringTemplate(SETTER_TEMPLATE);
+    /**
+     * Template for a setter Method
+     */
+    private static final String SETTER_TEMPLATE = """
+	        public void get$NAME$($TYPE$ $NAME$){
+	            this.$NAME$ = $NAME$;
+	        }
+            """;
 
-		StringBuilder attributsSB = new StringBuilder();
-		StringBuilder getterSB = new StringBuilder();
-		StringBuilder setterSB = new StringBuilder();
+    private final Formatter formatter = new Formatter();
 
-		attributs.forEach((name, type) -> {
-			attributsTemplate.reset();
-			attributsTemplate.setAttribute("NAME", name);
-			attributsTemplate.setAttribute("TYPE", type);
-			getterTemplate.reset();
-			getterTemplate.setAttribute("NAME", name);
-			getterTemplate.setAttribute("TYPE", type);
-			setterTemplate.reset();
-			setterTemplate.setAttribute("NAME", name);
-			setterTemplate.setAttribute("TYPE", type);
+    /**
+     * Creates a POJO Class File
+     *
+     * @param packageName package of the Class
+     * @param className   name of the Class
+     * @param attributs   attributes of the Class (name, type)
+     * @return the generated Class File
+     */
+    public String generate(@NonNull final String packageName, @NonNull final String className,
+            @NonNull final Map<String, String> attributs) {
+        final StringTemplate classTemplate = new StringTemplate(CLASS_TEMPLATE);
+        final StringTemplate attributsTemplate = new StringTemplate(ATTRIBUTS_TEMPLATE);
+        final StringTemplate getterTemplate = new StringTemplate(GETTER_TEMPLATE);
+        final StringTemplate setterTemplate = new StringTemplate(SETTER_TEMPLATE);
 
-			attributsSB.append(attributsTemplate.toString());
+        final StringBuilder attributsSB = new StringBuilder();
+        final StringBuilder getterSB = new StringBuilder();
+        final StringBuilder setterSB = new StringBuilder();
 
-			getterSB.append(getterTemplate.toString());
+        attributs.forEach((name, type) -> {
+            attributsTemplate.reset();
+            attributsTemplate.setAttribute("NAME", name);
+            attributsTemplate.setAttribute("TYPE", type);
+            getterTemplate.reset();
+            getterTemplate.setAttribute("NAME", name);
+            getterTemplate.setAttribute("TYPE", type);
+            setterTemplate.reset();
+            setterTemplate.setAttribute("NAME", name);
+            setterTemplate.setAttribute("TYPE", type);
 
-			setterSB.append(setterTemplate.toString());
-		});
+            attributsSB.append(attributsTemplate.toString());
 
-		classTemplate.setAttribute("PACKAGENAME", packageName);
-		classTemplate.setAttribute("CLASSNAME", className);
-		classTemplate.setAttribute("ATTRIBUTS", attributsSB.toString());
-		classTemplate.setAttribute("GETTER", getterSB.toString());
-		classTemplate.setAttribute("SETTER", setterSB.toString());
+            getterSB.append(getterTemplate.toString());
 
-		try {
-			return formatter.formatSource(classTemplate.toString());
-		} catch (FormatterException e) {
-			logger.warn(
-					"Formatting Error! Falling back to unformatted Class. Please check all names for reserved Words. (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)",
-					e);
-			return classTemplate.toString();
-		}
-	}
+            setterSB.append(setterTemplate.toString());
+        });
+
+        classTemplate.setAttribute("PACKAGENAME", packageName);
+        classTemplate.setAttribute("CLASSNAME", className);
+        classTemplate.setAttribute("ATTRIBUTS", attributsSB.toString());
+        classTemplate.setAttribute("GETTER", getterSB.toString());
+        classTemplate.setAttribute("SETTER", setterSB.toString());
+
+        try {
+            return formatter.formatSource(classTemplate.toString());
+        } catch (final FormatterException e) {
+            logger.warn(
+                    "Formatting Error! Falling back to unformatted Class. Please check all names for reserved Words. (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)",
+                    e);
+            return classTemplate.toString();
+        }
+    }
 }
