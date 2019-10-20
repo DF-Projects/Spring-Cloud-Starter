@@ -301,3 +301,6 @@ pyenv
 Vagrantfile
 
 *.retry
+.project
+.classpath
+**/target/
