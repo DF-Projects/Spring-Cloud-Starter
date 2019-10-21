@@ -47,7 +47,7 @@ class PojoClassGeneratorTest {
         final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateOneAttribut.java").getURL();
-        assertThat(generatedClass).isEqualTo(contentOf(expURL));
+        assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));
     }
 
     /**
@@ -68,7 +68,7 @@ class PojoClassGeneratorTest {
         final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateThreeAttributs.java").getURL();
-        assertThat(generatedClass).isEqualTo(contentOf(expURL));
+        assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));
     }
 
     /**
@@ -86,7 +86,7 @@ class PojoClassGeneratorTest {
         final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateNoAttributs.java").getURL();
-        assertThat(generatedClass).isEqualTo(contentOf(expURL));
+        assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));
     }
 
 }
