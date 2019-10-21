@@ -14,6 +14,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import com.github.dfprojects.SpringCloudStarter.model.ClassModel;
+
 /**
  * Tests für
  * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator
@@ -33,7 +35,7 @@ class PojoClassGeneratorTest {
 
     /**
      * Test method for
-     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(java.lang.String, java.lang.String, java.util.Map)}.
+     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(ClassModel)}.
      * 
      * @throws IOException if Test File is not found
      */
@@ -44,7 +46,7 @@ class PojoClassGeneratorTest {
         Map<String, String> attributs = new HashMap<>();
         attributs.put("intTest", "int");
 
-        final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
+        final String generatedClass = pojoClassGenerator.generate(new ClassModel(packageName, className, attributs));
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateOneAttribut.java").getURL();
         assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));
@@ -52,7 +54,7 @@ class PojoClassGeneratorTest {
 
     /**
      * Test method for
-     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(java.lang.String, java.lang.String, java.util.Map)}.
+     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(ClassModel)}.
      * 
      * @throws IOException if Test File is not found
      */
@@ -65,7 +67,7 @@ class PojoClassGeneratorTest {
         attributs.put("sfdgfdg", "String");
         attributs.put("fsdff", "long");
 
-        final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
+        final String generatedClass = pojoClassGenerator.generate(new ClassModel(packageName, className, attributs));
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateThreeAttributs.java").getURL();
         assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));
@@ -73,7 +75,7 @@ class PojoClassGeneratorTest {
 
     /**
      * Test method for
-     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(java.lang.String, java.lang.String, java.util.Map)}.
+     * {@link com.github.dfprojects.SpringCloudStarter.generator.PojoClassGenerator#generate(ClassModel)}.
      * 
      * @throws IOException if Test File is not found
      */
@@ -83,7 +85,7 @@ class PojoClassGeneratorTest {
         final String className = "TestClass";
         Map<String, String> attributs = new HashMap<>();
 
-        final String generatedClass = pojoClassGenerator.generate(packageName, className, attributs);
+        final String generatedClass = pojoClassGenerator.generate(new ClassModel(packageName, className, attributs));
 
         final URL expURL = new ClassPathResource("/PojoClassGeneratorTest/testGenerateNoAttributs.java").getURL();
         assertThat(generatedClass).isEqualToIgnoringWhitespace(contentOf(expURL));

@@ -1,13 +1,11 @@
 package com.github.dfprojects.SpringCloudStarter.generator;
 
-import java.util.Map;
-
 import org.antlr.stringtemplate.StringTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import com.github.dfprojects.SpringCloudStarter.model.ClassModel;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 
@@ -65,14 +63,11 @@ public class PojoClassGenerator {
 
     /**
      * Creates a POJO Class File
+     * @param classModel TODO
      *
-     * @param packageName package of the Class
-     * @param className   name of the Class
-     * @param attributs   attributes of the Class (name, type)
      * @return the generated Class File
      */
-    public String generate(@NonNull final String packageName, @NonNull final String className,
-            @NonNull final Map<String, String> attributs) {
+    public String generate(ClassModel classModel) {
         StringTemplate classTemplate = new StringTemplate(CLASS_TEMPLATE);
         StringTemplate attributsTemplate = new StringTemplate(ATTRIBUTS_TEMPLATE);
         StringTemplate getterTemplate = new StringTemplate(GETTER_TEMPLATE);
@@ -82,7 +77,7 @@ public class PojoClassGenerator {
         StringBuilder getterSB = new StringBuilder();
         StringBuilder setterSB = new StringBuilder();
 
-        attributs.forEach((name, type) -> {
+        classModel.getAttributs().forEach((name, type) -> {
             attributsTemplate.reset();
             attributsTemplate.setAttribute("NAME", name);
             attributsTemplate.setAttribute("TYPE", type);
@@ -100,8 +95,8 @@ public class PojoClassGenerator {
             setterSB.append(setterTemplate.toString());
         });
 
-        classTemplate.setAttribute("PACKAGENAME", packageName);
-        classTemplate.setAttribute("CLASSNAME", className);
+        classTemplate.setAttribute("PACKAGENAME", classModel.getPackageName());
+        classTemplate.setAttribute("CLASSNAME", classModel.getClassName());
         classTemplate.setAttribute("ATTRIBUTS", attributsSB.toString());
         classTemplate.setAttribute("GETTER", getterSB.toString());
         classTemplate.setAttribute("SETTER", setterSB.toString());
