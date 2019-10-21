@@ -8,6 +8,7 @@ cache:
   bundler: true
   directories:
     - '$HOME/.m2'
+install: /bin/true
 script:
   - 'mvn clean'
   - 'mvn test'
