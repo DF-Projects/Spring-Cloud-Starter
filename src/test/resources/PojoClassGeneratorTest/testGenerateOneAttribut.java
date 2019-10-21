@@ -1,7 +1,6 @@
 package org.packageTest.test;
 
 public class TestClass {
-
   private int intTest;
 
   public int getintTest() {

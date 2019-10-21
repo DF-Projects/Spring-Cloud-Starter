@@ -61,7 +61,7 @@ public class PojoClassGenerator {
 	        }
             """;
 
-    private final Formatter formatter = new Formatter();
+    private Formatter formatter = new Formatter();
 
     /**
      * Creates a POJO Class File
@@ -73,14 +73,14 @@ public class PojoClassGenerator {
      */
     public String generate(@NonNull final String packageName, @NonNull final String className,
             @NonNull final Map<String, String> attributs) {
-        final StringTemplate classTemplate = new StringTemplate(CLASS_TEMPLATE);
-        final StringTemplate attributsTemplate = new StringTemplate(ATTRIBUTS_TEMPLATE);
-        final StringTemplate getterTemplate = new StringTemplate(GETTER_TEMPLATE);
-        final StringTemplate setterTemplate = new StringTemplate(SETTER_TEMPLATE);
+        StringTemplate classTemplate = new StringTemplate(CLASS_TEMPLATE);
+        StringTemplate attributsTemplate = new StringTemplate(ATTRIBUTS_TEMPLATE);
+        StringTemplate getterTemplate = new StringTemplate(GETTER_TEMPLATE);
+        StringTemplate setterTemplate = new StringTemplate(SETTER_TEMPLATE);
 
-        final StringBuilder attributsSB = new StringBuilder();
-        final StringBuilder getterSB = new StringBuilder();
-        final StringBuilder setterSB = new StringBuilder();
+        StringBuilder attributsSB = new StringBuilder();
+        StringBuilder getterSB = new StringBuilder();
+        StringBuilder setterSB = new StringBuilder();
 
         attributs.forEach((name, type) -> {
             attributsTemplate.reset();
@@ -108,7 +108,7 @@ public class PojoClassGenerator {
 
         try {
             return formatter.formatSource(classTemplate.toString());
-        } catch (final FormatterException e) {
+        } catch (FormatterException e) {
             logger.warn(
                     "Formatting Error! Falling back to unformatted Class. Please check all names for reserved Words. (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)",
                     e);
