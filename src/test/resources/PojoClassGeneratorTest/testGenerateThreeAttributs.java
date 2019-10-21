@@ -1,6 +1,7 @@
 package org.packageTest.test;
 
 public class TestClass {
+    
   private long fsdff;
   private int intTest;
   private String sfdgfdg;
